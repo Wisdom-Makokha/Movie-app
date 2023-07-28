@@ -25,7 +25,7 @@ class MyMovieApp extends StatelessWidget{
         colorScheme: const ColorScheme.dark(brightness: Brightness.dark),
         useMaterial3: true,
       ),
-      home: MovieScreen(),
+      home: const MovieScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

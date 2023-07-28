@@ -21,6 +21,7 @@ class MovieScreenState extends State<MovieScreen>{
       String hintText, String labelText){
     return Container(
       margin: const EdgeInsets.only(bottom: 3.0),
+      height: 65.0,
       child: TextField(
         controller: fieldController,
         decoration: InputDecoration(
@@ -75,14 +76,27 @@ class MovieScreenState extends State<MovieScreen>{
   }
 
   void addMovieToList(){
-    final newMovie = Movie(
-      director: directorController.text,
-      title: titleController.text,
-      releaseYear: int.parse(releaseYearController.text),
-      poster: posterController.text
-    );
+    if(titleController.text.isEmpty){
+      Fluttertoast.showToast(msg: 'Title field empty');
+    } else if(directorController.text.isEmpty){
+      Fluttertoast.showToast(msg: 'Director field is empty');
+    } else if(releaseYearController.text.isEmpty){
+      Fluttertoast.showToast(msg: 'Release Year field empty');
+    } else if(posterController.text.isEmpty){
+      Fluttertoast.showToast(msg: 'Poster field empty');
+    }else{
+      final newMovie = Movie(
+          director: directorController.text,
+          title: titleController.text,
+          releaseYear: int.parse(releaseYearController.text),
+          poster: posterController.text
+      );
 
-    movieList.add(newMovie);
+      setState((){
+        movieList.add(newMovie);
+      });
+
+    }
   }
 
   void addMovieDialog(BuildContext context){
@@ -136,7 +150,7 @@ class MovieScreenState extends State<MovieScreen>{
           )
         ],
         gradient: LinearGradient(
-          colors: [Colors.black45, Colors.deepPurple],
+          colors: [Colors.black, Colors.deepPurple],
           begin: Alignment.topCenter,
           end: Alignment.bottomLeft,
         ),
@@ -149,7 +163,7 @@ class MovieScreenState extends State<MovieScreen>{
         ),
         //Gridview.builder is the is what i used to make the grid
         body: GridView.builder(
-          //The grid delegate is where you specify the separation between the varius items in your grid
+          //The grid delegate is where you specify the separation between the various items in your grid
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               //cross axis spacing is the amount of space between items vertically
               crossAxisSpacing: 9.0,
@@ -215,7 +229,9 @@ class MovieScreenState extends State<MovieScreen>{
           itemCount: movieList.length,
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: (){},
+          onPressed: (){
+            addMovieDialog(context);
+          },
           label: const Text('Add new movie'),
           icon: const Icon(Icons.add_card),
         )
